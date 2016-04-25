@@ -1,3 +1,122 @@
 <resources>
     <string name="app_name">AugmentedRealityMVP</string>
+    <string name="title_email">Email</string>
+    <string name="title_password">Password</string>
+    <string name="title_login">Login</string>
+    <string name="title_error">Error</string>
+    <string name="msg_email_error">The email format is invalid</string>
+    <string name="msg_password_error">Password is too short</string>
+    <string name="ok">OK</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_login">Sign in</string>
+
+
+    <string name="gcm_defaultSenderId">280581985221</string>
+    <string name="btn_link_to_register">Not a member? Sign up now.</string>
+    <string name="btn_login">LOGIN</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_password_confirmation">Password confirmation</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_name">Full name</string>
+    <string name="btn_register">REGISTER</string>
+    <string name="btn_link_to_login">Already registered! Login Me.</string>
+
+    <string name="gcm_send_message">Token retrieved and sent to server! You can now use gcmsender to
+        send downstream messages to this app.</string>
+    <string name="registering_message">Generating InstanceID token...</string>
+    <string name="token_error_message">An error occurred while either fetching the InstanceID token,
+        sending the fetched token to the server or subscribing to the PubSub topic. Please try
+        running the sample again.</string>
+    <string name="google_app_id">972406586226</string>
+
+
+    <!-- Strings related to login -->
+    <string name="prompt_enterprise_network">Enterprise\nNetwork</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <string name="dialog_title_error">Error</string>
+    <string name="dialog_content_server_problem">Server error!</string>
+    <string name="dialog_title_content_network_problem">No internet connection</string>
+    <string name="click_back_again">Please click BACK again to exit</string>
+
+    <string name="welcome_get_start">Let\'s get started with</string>
+    <string name="welcome_signup_customer">Sign up as a customer</string>
+    <string name="welcome_setup">Setup as a company</string>
+    <string name="welcome_app_name_1">Enterprise</string>
+    <string name="welcome_app_name_2">Network</string>
+    <string name="welcome_have_account">You have an account already?</string>
+    <string name="welcome_signin">Sign in</string>
+
+    <!--String related to home main-->
+    <string name="search">Search</string>
+    <string name="prompt_number_sample">100</string>
+    <string name="prompt_enterprises">enterprises</string>
+    <string name="prompt_total_customers">Total customers</string>
+    <string name="prompt_number_of_enterprises">Number of enterprises:</string>
+    <string name="prompt_active_customers">Active customers</string>
+    <string name="prompt_number_of_staffs">Number of staffs:</string>
+    <string name="prompt_number_of_customers">Number of customers</string>
+    <string name="prompt_total_online_time">Total online time</string>
+    <string name="prompt_total_online_time_hours">Total online time (hours):</string>
+
+    <!--String related to Online Enterprises-->
+    <string name="online_enterprises">Online Enterprises</string>
+
+    <!--string related to edit info-->
+    <string name="title">Title:</string>
+    <string name="first">First*:</string>
+    <string name="middle">Middle:</string>
+    <string name="last">Last*:</string>
+    <string name="suffix">Suffix:</string>
+    <string name="email">Email:</string>
+    <string name="phone">Phone:</string>
+    <string name="country">Country:</string>
+    <string name="street">Street</string>
+    <string name="city">City:</string>
+    <string name="state">State:</string>
+    <string name="zip">Zip:</string>
+    <string name="store_name">Store name</string>
+    <string name="store_address">Store address</string>
+    <string name="welcome_greeting">Welcome to Enterprise Network</string>
+    <string name="email_sample">dangquanuet@gmail.com</string>
+    <string name="welcome_guide">Navigating Around the Enterprise Network</string>
+    <string name="welcome_guide_2">Tap the icon on the button right corner\nto select a working module.</string>
+    <string name="switch_account">switch Account</string>
+    <string name="username_sample">Anh Quan</string>
+    <string name="address_sample">62 Tran Thai Tong, Cau Giay, Ha Noi</string>
+    <string name="assets">Assets</string>
+    <string name="sample_address">62 Tran Thai Tong, Cau Giay</string>
+    <string name="sample_phone">04888666</string>
+    <string name="sample_number">0</string>
+    <string name="stores">stores</string>
+    <string name="product">products</string>
+    <string name="list_product_images">list_product_images</string>
+    <string name="value">Value</string>
+
+    <!--string related to login-->
+
+    <string name="navigation_customer">Customer</string>
+    <string name="default_picture">Default picture</string>
+
+
+    <!-- navigation drawer-->
+    <string name="nav_home">Home</string>
+    <string name="nav_all_store">All stores</string>
+    <string name="nav_log_out">Log out</string>
+    <string name="navigation_sale_bt">Sales</string>
+    <string name="nav_other">Other</string>
 </resources>
