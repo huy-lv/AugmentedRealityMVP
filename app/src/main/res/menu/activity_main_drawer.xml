@@ -4,32 +4,32 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
-            android:icon="@mipmap/default_profile"
+            android:icon="@mipmap/nav_camera"
             android:title="Camera" />
         <item
             android:id="@+id/nav_marker"
-            android:icon="@mipmap/default_profile"
+            android:icon="@mipmap/nav_image"
             android:title="Marker" />
         <item
             android:id="@+id/nav_data"
-            android:icon="@mipmap/default_profile"
-            android:title="Data" />
+            android:icon="@mipmap/nav_model"
+            android:title="Model" />
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
                 android:id="@+id/nav_settings"
-                android:icon="@mipmap/default_profile"
+                android:icon="@mipmap/nav_settings"
                 android:title="Settings" />
 
             <item
                 android:id="@+id/nav_share"
-                android:icon="@mipmap/default_profile"
+                android:icon="@mipmap/nav_share"
                 android:title="Share" />
             <item
                 android:id="@+id/nav_logout"
-                android:icon="@mipmap/default_profile"
+                android:icon="@mipmap/nav_logout"
                 android:title="Logout" />
         </menu>
     </item>

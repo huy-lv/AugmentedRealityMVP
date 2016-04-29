@@ -1,38 +1,63 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_weight="4">
 
-    <com.isseiaoki.simplecropview.CropImageView
-        android:id="@+id/cropImageView"
+    <LinearLayout
+        android:layout_weight="3"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:padding="16dp"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Insert marker name"
-        android:id="@+id/textView3"
-        android:layout_gravity="center_horizontal" />
-
-    <EditText
-        android:background="#84ff00"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/crop_activity_marker_name_et" />
-
-    <Button
-        android:id="@+id/crop_activity_upload_bt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:text="Upload"
-        />
+        android:layout_height="0dp">
 
 
+        <com.isseiaoki.simplecropview.CropImageView xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cropImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            custom:scv_crop_mode="free"
+            custom:scv_frame_color="@color/colorAccent"
+            custom:scv_frame_stroke_weight="1dp"
+            custom:scv_guide_color="@color/colorAccent"
+            custom:scv_guide_show_mode="show_always"
+            custom:scv_guide_stroke_weight="1dp"
+            custom:scv_handle_color="@color/colorAccent"
+            custom:scv_handle_show_mode="show_always"
+            custom:scv_handle_size="14dp"
+            custom:scv_min_frame_size="50dp"
+            custom:scv_touch_padding="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Insert marker name"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/crop_activity_marker_name_et"
+            android:layout_width="200dp"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="#750073ff" />
+
+        <Button
+            android:id="@+id/crop_activity_upload_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:text="Upload" />
+
+    </LinearLayout>
 </LinearLayout>

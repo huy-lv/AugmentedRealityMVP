@@ -5,11 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.EditText;
 
 import com.isseiaoki.simplecropview.CropImageView;
+import com.isseiaoki.simplecropview.callback.LoadCallback;
 
-import java.io.FileInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -18,6 +21,7 @@ import butterknife.OnClick;
 import vnu.uet.augmentedrealitymvp.R;
 import vnu.uet.augmentedrealitymvp.base.BaseActivity;
 import vnu.uet.augmentedrealitymvp.common.Constants;
+import vnu.uet.augmentedrealitymvp.common.util.VarUtils;
 import vnu.uet.augmentedrealitymvp.helper.SessionManager;
 
 /**
@@ -34,49 +38,55 @@ public class CropActivity extends BaseActivity<CropPresenter> implements CropVie
     EditText crop_activity_marker_name_et;
     String encoded;
     SessionManager session;
+    Uri uriImage=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         session = new SessionManager(this);
         Intent i= getIntent();
-        cropImageView.setCropMode(CropImageView.CropMode.RATIO_FREE);
         switch (i.getIntExtra(Constants.KEY_ACTIVITY_RESULT_TYPE,0)){
             case Constants.REQUEST_CAMERA:
-                Bitmap bitmap1 = null;
                 String filename = i.getStringExtra(Constants.KEY_ACTIVITY_RESULT_DATA);
-                try {
-                    FileInputStream is = this.openFileInput(filename);
-                    bitmap1 = BitmapFactory.decodeStream(is);
-                    if(bitmap1.getHeight()>=4096 || bitmap1.getWidth()>=4096){
-                        int nh = (int) ( bitmap1.getHeight() * (512.0 / bitmap1.getWidth()));
-                        scaled = Bitmap.createScaledBitmap(bitmap1, 512, nh, true);
-                    }
-                    is.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                uriImage = Uri.fromFile(new File(VarUtils.PATH_AR,filename));
                 break;
             case Constants.SELECT_FILE:
-                Uri uriImage = Uri.parse(i.getStringExtra(Constants.KEY_ACTIVITY_RESULT_DATA));
-                try {
-                    imageStream = getContentResolver().openInputStream(uriImage);
-                    Bitmap bitmap2 = BitmapFactory.decodeStream(imageStream);
-                    if(bitmap2.getHeight()>=4096 || bitmap2.getWidth()>=4096){
-                        int nh = (int) ( bitmap2.getHeight() * (512.0 / bitmap2.getWidth()));
-                        scaled = Bitmap.createScaledBitmap(bitmap2, 512, nh, true);
-                    }
-                    cropImageView.setImageBitmap(scaled);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                uriImage = Uri.parse(i.getStringExtra(Constants.KEY_ACTIVITY_RESULT_DATA));
                 break;
             case 0:
                 showErrorDialog("error when get image data");
                 break;
         }
-    }
 
+        if(uriImage!=null) {
+            cropImageView.startLoad(uriImage, new LoadCallback() {
+                @Override
+                public void onSuccess() {
+                    try {
+                        imageStream = getContentResolver().openInputStream(uriImage);
+                        Bitmap bitmap2 = BitmapFactory.decodeStream(imageStream);
+                        if (bitmap2.getHeight() >= 4096 || bitmap2.getWidth() >= 4096) {
+                            int nh = (int) (bitmap2.getHeight() * (1024.0 / bitmap2.getWidth()));
+                            scaled = Bitmap.createScaledBitmap(bitmap2, 1024, nh, true);
+                        }else{
+                            scaled = bitmap2;
+                        }
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        scaled.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream .toByteArray();
+                        encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        }
+    }
     @OnClick(R.id.crop_activity_upload_bt)
     void uploadMarker(){
         showProgress("Upload marker...");

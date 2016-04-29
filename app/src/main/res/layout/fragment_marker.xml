@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d9d9d9"
@@ -26,13 +27,32 @@
                 android:scrollbars="vertical" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/fam"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@mipmap/default_profile" />
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            fab:menu_fab_size="normal"
+            fab:menu_showShadow="true"
+            android:layout_gravity="right|bottom">
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_take_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/take_photo"
+                fab:fab_size="normal"
+                fab:fab_label="Take new photo" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_pick_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/pick_photo"
+                fab:fab_size="normal"
+                fab:fab_label="Pick photo" />
+        </com.github.clans.fab.FloatingActionMenu>
 
     </FrameLayout>
 

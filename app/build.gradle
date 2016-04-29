@@ -64,8 +64,8 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile 'com.isseiaoki:simplecropview:1.0.16'
+    compile 'com.isseiaoki:simplecropview:1.1.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.koushikdutta.ion:ion:2.+'
-
+    compile 'com.github.clans:fab:1.6.3'
 }
