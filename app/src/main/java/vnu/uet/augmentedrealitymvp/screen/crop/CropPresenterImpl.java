@@ -1,5 +1,11 @@
 package vnu.uet.augmentedrealitymvp.screen.crop;
 
+import android.content.ContentResolver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Base64;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -9,6 +15,9 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +30,7 @@ import vnu.uet.augmentedrealitymvp.model.Marker;
  * Created by huylv on 24-Apr-16.
  */
 public class CropPresenterImpl implements CropPresenter {
+    Bitmap scaled;
     private CropView view;
     public CropPresenterImpl(CropView v){view = v;}
 
@@ -71,6 +81,7 @@ public class CropPresenterImpl implements CropPresenter {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("name", name);
+                params.put("content", "content");
                 params.put("base64", encoded);
                 return params;
             }
@@ -84,5 +95,22 @@ public class CropPresenterImpl implements CropPresenter {
         };
 
         ArApplication.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    @Override
+    public void encodeImage(ContentResolver contentResolver, Uri uriImage) throws FileNotFoundException {
+        InputStream imageStream = contentResolver.openInputStream(uriImage);
+        Bitmap bitmap2 = BitmapFactory.decodeStream(imageStream);
+        if (bitmap2.getHeight() >= 4096 || bitmap2.getWidth() >= 4096) {
+            int nh = (int) (bitmap2.getHeight() * (1024.0 / bitmap2.getWidth()));
+            scaled = Bitmap.createScaledBitmap(bitmap2, 1024, nh, true);
+        } else {
+            scaled = bitmap2;
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        scaled.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        view.onEncodeSuccess(encoded);
     }
 }

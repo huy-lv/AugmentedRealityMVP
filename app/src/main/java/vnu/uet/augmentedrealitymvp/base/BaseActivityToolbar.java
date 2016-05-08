@@ -12,7 +12,7 @@ import vnu.uet.augmentedrealitymvp.R;
 public abstract class BaseActivityToolbar <T extends BasePresenter> extends BaseActivity<T> implements BaseView<T>{
 
     @Nullable
-    Toolbar toolBar;
+    protected Toolbar toolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

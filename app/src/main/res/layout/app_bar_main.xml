@@ -5,13 +5,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".screen.main.MainActivity">
-
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--android:id="@+id/toolbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="?attr/actionBarSize"-->
-        <!--android:background="@color/colorPrimary">-->
-    <!--</android.support.v7.widget.Toolbar>-->
     <include layout="@layout/toolbar"/>
 
     <FrameLayout
@@ -21,15 +14,15 @@
         android:layout_below="@+id/toolbar" >
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/textView"
-            android:layout_alignTop="@+id/mainLayout"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/mainLayout"
+            android:layout_gravity="center"
             android:layout_marginTop="67dp"
-            android:layout_gravity="center" />
+            android:text="New Text" />
     </FrameLayout>
 
 </RelativeLayout>

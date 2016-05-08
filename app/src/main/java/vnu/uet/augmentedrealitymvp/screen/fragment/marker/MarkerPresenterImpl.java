@@ -26,8 +26,11 @@ import vnu.uet.augmentedrealitymvp.model.Marker;
  */
 public class MarkerPresenterImpl implements MarkerPresenter {
     private MarkerView view;
-    public MarkerPresenterImpl(MarkerView v){view = v;}
     private List<Marker> markerList = new ArrayList<>();
+
+    public MarkerPresenterImpl(MarkerView v) {
+        view = v;
+    }
 
     @Override
     public void checkLocalMarker() {
@@ -55,6 +58,7 @@ public class MarkerPresenterImpl implements MarkerPresenter {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void getAllMarkers() {

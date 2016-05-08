@@ -12,4 +12,5 @@ public interface MarkerView extends BaseView<MarkerPresenter>{
     void onGetAllMarkersSuccess(List<Marker> markers);
 
     void onCheckLocalSuccess(List<Marker> markerList);
+
 }

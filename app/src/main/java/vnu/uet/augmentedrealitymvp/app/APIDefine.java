@@ -6,7 +6,7 @@ package vnu.uet.augmentedrealitymvp.app;
 public class APIDefine {
 
     //    public static String baseURL = "http://vntech.me";
-    public static String baseURL = "http://192.168.1.241:3000";
+    public static String baseURL = "http://192.168.0.5:3000";
 
     public static String URL_LOGIN = baseURL + "/api/sessions";
     public static String URL_REGISTER = baseURL + "/api/users";

@@ -24,12 +24,12 @@ public class CacheHelper {
     public static CacheHelper instance;
     private ArrayList<String> contentDat;
 
+    private CacheHelper() {
+    }
+
     public static CacheHelper getInstance() {
         if (instance == null) instance = new CacheHelper();
         return instance;
-    }
-
-    private CacheHelper() {
     }
 
     public void cacheDataNFT(Context ctx, String markerName) {
@@ -38,12 +38,12 @@ public class CacheHelper {
         if (!cacheFolder.exists()) {
             success = cacheFolder.mkdir();
         } else {
-            Log.e("cxz", "cache folder exist");
+            Log.e(getClass().getName(), "cache folder exist");
         }
         if (success) {
-            Log.e("cxz", "cache folder created");
+            Log.e(getClass().getName(), "cache folder created");
         } else {
-            Log.e("cxz", "create cache error");
+            Log.e(getClass().getName(), "create cache error");
         }
 
 
@@ -52,32 +52,32 @@ public class CacheHelper {
         File isetPath = new File(VarUtils.PATH_AR + File.separator + markerName + ".iset");
 
         if (fsetPath.exists() && fset3Path.exists() && isetPath.exists()) {
-            Log.e("cxz", "fset exists");
+            Log.e(getClass().getName(), "fset exists");
             File fsetDest = new File(cacheFolder + File.separator + markerName + ".fset");
             if (fsetDest.exists()) {
-                Log.e("cxz", "fset dest exists");
+                Log.e(getClass().getName(), "fset dest exists");
             } else {
-                Log.e("cxz", "fset dest not exists");
+                Log.e(getClass().getName(), "fset dest not exists");
                 copyFile(fsetPath.toString(), cacheFolder.toString());
             }
 
             File fset3Dest = new File(cacheFolder + File.separator + markerName + ".fset3");
             if (fset3Dest.exists()) {
-                Log.e("cxz", "fset3 dest exists");
+                Log.e(getClass().getName(), "fset3 dest exists");
             } else {
-                Log.e("cxz", "fset3 dest not exists");
+                Log.e(getClass().getName(), "fset3 dest not exists");
                 copyFile(fset3Path.toString(), cacheFolder.toString());
             }
 
             File isetDest = new File(cacheFolder + File.separator + markerName + ".iset");
             if (isetDest.exists()) {
-                Log.e("cxz", "iset dest exists");
+                Log.e(getClass().getName(), "iset dest exists");
             } else {
-                Log.e("cxz", "iset dest not exists");
+                Log.e(getClass().getName(), "iset dest not exists");
                 copyFile(isetPath.toString(), cacheFolder.toString());
             }
         } else {
-            Log.e("cxz", " fset not exists");
+            Log.e(getClass().getName(), " fset not exists");
         }
 
         changeMarkerNameInDat(ctx,markerName);

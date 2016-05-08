@@ -11,7 +11,6 @@
     <uses-permission android:name="com.freedom.augmentedreality.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <permission
         android:name="com.freedom.augmentedreality.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
@@ -34,21 +33,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".screen.main.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
-        <activity android:name=".screen.login.LoginActivity"/>
+        <activity android:name=".screen.login.LoginActivity" />
         <activity android:name=".screen.splash.SplashActivity">
 
         </activity>
         <activity android:name=".screen.register.RegisterActivity"/>
         <activity android:name=".screen.camera.CameraActivity">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".screen.crop.CropActivity"/>
         <activity android:name=".screen.markerdetail.MarkerDetailActivity"/>
+        <activity android:name=".screen.viewcache.ViewCacheActivity" />
     </application>
 
 </manifest>

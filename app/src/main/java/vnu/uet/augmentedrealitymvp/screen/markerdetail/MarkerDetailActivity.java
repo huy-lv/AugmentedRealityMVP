@@ -11,7 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.ProgressCallback;
@@ -24,9 +23,8 @@ import butterknife.OnClick;
 import vnu.uet.augmentedrealitymvp.R;
 import vnu.uet.augmentedrealitymvp.app.APIDefine;
 import vnu.uet.augmentedrealitymvp.base.BaseActivityToolbar;
-import vnu.uet.augmentedrealitymvp.common.Constants;
 import vnu.uet.augmentedrealitymvp.common.util.VarUtils;
-import vnu.uet.augmentedrealitymvp.helper.SQLiteHandler;
+import vnu.uet.augmentedrealitymvp.helper.CacheHelper;
 import vnu.uet.augmentedrealitymvp.model.Marker;
 
 /**
@@ -51,6 +49,8 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
     public Button marker_detail_download_bt;
     @Bind(R.id.marker_detail_delete_bt)
     Button marker_detail_delete_bt;
+    @Bind(R.id.marker_detail_copy_bt)
+    Button marker_detail_copy_bt;
 
     @Bind(R.id.marker_detail_download_iset_pb)
     ProgressBar marker_detail_download_iset_pb;
@@ -60,14 +60,19 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
     ProgressBar marker_detail_download_fset3_pb;
 
     Marker marker;
-    boolean IS_DOWNLOADING;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Gson gson = new Gson();
-        marker = gson.fromJson(getIntent().getStringExtra(Constants.KEY_INTENT_MARKER_OBJECT),Marker.class);
+        // o day se bi null
+//        assert getSupportActionBar() != null;
+//        ActionBar actionBar = getSupportActionBar();
+//
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        marker = getPresenter().getMarkerFromJson(getIntent());
 
         marker_detail_id_tv.setText(String.valueOf(marker.get_id()));
         marker_detail_name_tv.setText(marker.get_name());
@@ -77,7 +82,7 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
             marker_detail_fset3_tv.setText(marker.get_fset3());
         }
 
-        if (marker.get_image().contains("ARManager")) {
+        if (marker.get_image().contains("ARManager")) {                //means local marker
             marker_detail_download_bt.setVisibility(View.GONE);
             File imgFile = new File(marker.get_image());
             if (imgFile.exists()) {
@@ -89,6 +94,7 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
         } else {
             Picasso.with(this).load(APIDefine.baseURL + marker.get_image()).into(marker_detail_image);
             marker_detail_delete_bt.setVisibility(View.GONE);
+            marker_detail_copy_bt.setVisibility(View.GONE);
         }
 
         marker_detail_iset_tv.setSelected(true);
@@ -96,26 +102,22 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
         marker_detail_fset3_tv.setSelected(true);
     }
 
+    @OnClick(R.id.marker_detail_copy_bt)
+    void copyMarkerToCache() {
+        CacheHelper cacheHelper = CacheHelper.getInstance();
+        cacheHelper.cacheDataNFT(this, marker.get_name());
+    }
+
     @OnClick(R.id.marker_detail_delete_bt)
-    void deleteMarker(){
+    void deleteMarker() {
         new AlertDialog.Builder(this)
                 .setTitle("Delete marker")
                 .setMessage("Are you sure you want to delete this marker?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //delete marker
-                        File fIset = new File(marker.get_iset());
-                        File fFset = new File(marker.get_fset());
-                        File fFset3 = new File(marker.get_fset3());
-                        File fImage = new File(marker.get_image());
-                        if(fIset.exists()) fIset.delete();
-                        if(fFset.exists()) fFset.delete();
-                        if(fFset3.exists()) fFset3.delete();
-                        if(fImage.exists()) fImage.delete();
+                        getPresenter().deleteMarker(marker);
 
-                        SQLiteHandler db = new SQLiteHandler(getContext());
-                        db.deleteMarkersOnline(marker.get_id());
-                        db.close();
+
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -150,7 +152,7 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
                         marker_detail_download_iset_pb.setProgress((int) (100 * downloaded / total));
                     }
                 })
-                .write(new File(VarUtils.PATH_AR +File.separator+ marker.get_name()+".iset"))
+                .write(new File(VarUtils.PATH_AR + File.separator + marker.get_name() + ".iset"))
                 .setCallback(new FutureCallback<File>() {
                     @Override
                     public void onCompleted(Exception e, File file) {
@@ -163,7 +165,7 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
                 });
     }
 
-    void downloadFset(){
+    void downloadFset() {
         Ion.with(this)
                 .load(APIDefine.baseURL + marker.get_fset())
                 // have a ProgressBar get updated automatically with the percent
@@ -175,7 +177,7 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
                         marker_detail_download_fset_pb.setProgress((int) (100 * downloaded / total));
                     }
                 })
-                .write(new File(VarUtils.PATH_AR +File.separator+ marker.get_name()+".fset"))
+                .write(new File(VarUtils.PATH_AR + File.separator + marker.get_name() + ".fset"))
                 .setCallback(new FutureCallback<File>() {
                     @Override
                     public void onCompleted(Exception e, File file) {
@@ -188,7 +190,7 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
                 });
     }
 
-    void downloadFset3(){
+    void downloadFset3() {
         Ion.with(this)
                 .load(APIDefine.baseURL + marker.get_fset3())
                 // have a ProgressBar get updated automatically with the percent
@@ -200,7 +202,7 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
                         marker_detail_download_fset3_pb.setProgress((int) (100 * downloaded / total));
                     }
                 })
-                .write(new File(VarUtils.PATH_AR +File.separator+ marker.get_name() + ".fset3"))
+                .write(new File(VarUtils.PATH_AR + File.separator + marker.get_name() + ".fset3"))
                 .setCallback(new FutureCallback<File>() {
                     @Override
                     public void onCompleted(Exception e, File file) {
@@ -213,7 +215,7 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
                 });
     }
 
-    void downloadImage(){
+    void downloadImage() {
         Ion.with(this)
                 .load(APIDefine.baseURL + marker.get_image())
                 // have a ProgressBar get updated automatically with the percent
@@ -225,7 +227,7 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
                         marker_detail_download_fset3_pb.setProgress((int) (100 * downloaded / total));
                     }
                 })
-                .write(new File(VarUtils.PATH_AR +File.separator+ marker.get_name() + ".jpg"))
+                .write(new File(VarUtils.PATH_AR + File.separator + marker.get_name() + ".jpg"))
                 .setCallback(new FutureCallback<File>() {
                     @Override
                     public void onCompleted(Exception e, File file) {
@@ -240,11 +242,16 @@ public class MarkerDetailActivity extends BaseActivityToolbar<MarkerDetailPresen
 
     @Override
     protected int getLayoutId() {
-        return R.layout.dialog_marker_detail;
+        return R.layout.activity_marker_detail;
     }
 
     @Override
     public MarkerDetailPresenter onCreatePresenter() {
         return new MarkerDetailPresenterImpl(this);
+    }
+
+    @Override
+    public void onDeleteMarkerSuccess() {
+        finish();
     }
 }

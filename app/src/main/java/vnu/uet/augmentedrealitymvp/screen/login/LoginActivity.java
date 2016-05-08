@@ -40,6 +40,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements  Logi
         login_password_et.setText("321ewqdsa");
         String email = login_email_et.getText().toString().trim();
         String password = login_password_et.getText().toString().trim();
+        showProgress("Login...");
         getPresenter().doLogin(email, password);
     }
 
@@ -57,6 +58,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements  Logi
 
     @Override
     public void onLoginSuccess() {
+        hideProgress();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -64,6 +66,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements  Logi
 
     @Override
     public void onLoginError(String errorMessage) {
+        hideProgress();
         showErrorDialog(errorMessage);
     }
 

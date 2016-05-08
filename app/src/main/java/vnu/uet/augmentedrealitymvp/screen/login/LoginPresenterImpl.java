@@ -27,6 +27,7 @@ public class LoginPresenterImpl implements LoginPresenter {
 
     @Override
     public void doLogin(final String email, final String password) {
+
         if (!email.isEmpty() && !password.isEmpty()) {
 
             // Tag used to cancel the request

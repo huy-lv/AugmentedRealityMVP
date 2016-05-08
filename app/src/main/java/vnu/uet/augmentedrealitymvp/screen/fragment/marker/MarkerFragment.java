@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,7 +20,6 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,11 +56,11 @@ public class MarkerFragment extends BaseFragment<MarkerPresenter> implements Mar
     @Bind(R.id.marker_list_switch_offline)
     Button marker_list_switch_offline;
     boolean FIRST_TAB = true;
+    Uri tempImageUri;
     private MarkersAdapter adapterOnline;
     private MarkersAdapter adapterOffline;
     private List<Marker> markerListOnline = new ArrayList<>();
     private List<Marker> markerListOffline = new ArrayList<>();
-
 
     @Nullable
     @Override
@@ -104,23 +102,9 @@ public class MarkerFragment extends BaseFragment<MarkerPresenter> implements Mar
         if (resultCode == getActivity().RESULT_OK) {
             Bitmap bm = null;
             if (requestCode == Constants.REQUEST_CAMERA) {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                //Write file
-                String filename = System.currentTimeMillis() + ".jpg";
-                File newFile = new File(VarUtils.PATH_AR, filename);
-                if (newFile.exists()) newFile.delete();
-                try {
-                    FileOutputStream out = new FileOutputStream(newFile);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                    out.flush();
-                    out.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
                 Intent i = new Intent(getActivity(), CropActivity.class);
                 i.putExtra(Constants.KEY_ACTIVITY_RESULT_TYPE, Constants.REQUEST_CAMERA);
-                i.putExtra(Constants.KEY_ACTIVITY_RESULT_DATA, filename);
+                i.putExtra(Constants.KEY_ACTIVITY_RESULT_DATA, tempImageUri.toString());
                 startActivity(i);
             } else if (requestCode == Constants.SELECT_FILE) {
                 Uri selectedImageUri = data.getData();
@@ -139,6 +123,7 @@ public class MarkerFragment extends BaseFragment<MarkerPresenter> implements Mar
             marker_list_switch_online.setBackgroundColor(Color.parseColor("#00C431"));
             marker_list_switch_offline.setBackgroundColor(Color.parseColor("#7BFF00"));
             FIRST_TAB = true;
+            adapterOnline.notifyDataSetChanged();
         }
     }
 
@@ -149,6 +134,7 @@ public class MarkerFragment extends BaseFragment<MarkerPresenter> implements Mar
             marker_list_switch_online.setBackgroundColor(Color.parseColor("#7BFF00"));
             marker_list_switch_offline.setBackgroundColor(Color.parseColor("#00C431"));
             FIRST_TAB = false;
+            adapterOffline.notifyDataSetChanged();
         }
     }
 
@@ -162,19 +148,12 @@ public class MarkerFragment extends BaseFragment<MarkerPresenter> implements Mar
 
     @OnClick(R.id.fab_take_photo)
     void takePhoto() {
-
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        floatingActionMenu.close(true);
-//        startActivityForResult(intent, Constants.REQUEST_CAMERA);
-        String pictureImagePath = "";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        pictureImagePath = storageDir.getAbsolutePath() + "/" + System.currentTimeMillis() + ".jpg";
-        File file = new File(pictureImagePath);
-        Uri outputFileUri = Uri.fromFile(file);
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-        startActivityForResult(cameraIntent, 1);
+        floatingActionMenu.close(true);
+        File f = new File(VarUtils.PATH_AR + "/" + System.currentTimeMillis() + ".jpg");
+        tempImageUri = Uri.fromFile(f);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, tempImageUri);
+        startActivityForResult(intent, Constants.REQUEST_CAMERA);
     }
 
     @Override
@@ -201,5 +180,12 @@ public class MarkerFragment extends BaseFragment<MarkerPresenter> implements Mar
         markerListOffline.clear();
         markerListOffline.addAll(markerList);
         adapterOffline.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapterOffline.notifyDataSetChanged();
+        adapterOnline.notifyDataSetChanged();
     }
 }

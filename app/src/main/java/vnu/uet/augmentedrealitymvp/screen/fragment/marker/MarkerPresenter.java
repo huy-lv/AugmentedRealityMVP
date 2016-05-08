@@ -7,6 +7,5 @@ import vnu.uet.augmentedrealitymvp.base.BasePresenter;
  */
 public interface MarkerPresenter extends BasePresenter {
     void getAllMarkers();
-
     void checkLocalMarker();
 }

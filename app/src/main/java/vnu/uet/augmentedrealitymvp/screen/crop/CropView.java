@@ -7,4 +7,6 @@ import vnu.uet.augmentedrealitymvp.base.BaseView;
  */
 public interface CropView extends BaseView<CropPresenter>{
     void onUploadSuccess();
+
+    void onEncodeSuccess(String encoded);
 }

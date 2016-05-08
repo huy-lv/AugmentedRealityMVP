@@ -2,8 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include layout="@layout/toolbar"
-        android:id="@+id/include" />
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -208,18 +210,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:orientation="vertical"
-                android:layout_margin="20dp">
+                android:layout_margin="20dp"
+                android:orientation="vertical">
                 <TextView
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Image"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Image"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
                 <ImageView
-                    android:layout_marginTop="10dp"
                     android:id="@+id/marker_detail_image"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/markerdetail" />
@@ -229,18 +231,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:orientation="vertical"
-                android:layout_margin="20dp">
+                android:layout_margin="20dp"
+                android:orientation="vertical">
                 <TextView
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Model"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Model"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
                 <ImageView
-                    android:layout_marginTop="10dp"
                     android:id="@+id/model_preview"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/model_default" />
@@ -249,13 +251,13 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout2"
+        android:layout_gravity="center_horizontal"
         android:gravity="center">
 
         <Button
@@ -270,5 +272,10 @@
             android:layout_height="wrap_content"
             android:text="Delete" />
 
+        <Button
+            android:id="@+id/marker_detail_copy_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Copy to cache" />
     </LinearLayout>
 </RelativeLayout>

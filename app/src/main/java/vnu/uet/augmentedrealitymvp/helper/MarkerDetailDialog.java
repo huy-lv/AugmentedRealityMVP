@@ -65,7 +65,7 @@ public class MarkerDetailDialog extends Dialog {
         super(c);
         context = c;
         marker = m;
-        setContentView(R.layout.dialog_marker_detail);
+        setContentView(R.layout.activity_marker_detail);
         ButterKnife.bind(this);
 
         IS_DOWNLOADING = false;

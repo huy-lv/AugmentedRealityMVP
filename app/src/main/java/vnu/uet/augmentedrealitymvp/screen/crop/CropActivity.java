@@ -2,18 +2,17 @@ package vnu.uet.augmentedrealitymvp.screen.crop;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.isseiaoki.simplecropview.CropImageView;
 import com.isseiaoki.simplecropview.callback.LoadCallback;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 import butterknife.Bind;
@@ -21,7 +20,6 @@ import butterknife.OnClick;
 import vnu.uet.augmentedrealitymvp.R;
 import vnu.uet.augmentedrealitymvp.base.BaseActivity;
 import vnu.uet.augmentedrealitymvp.common.Constants;
-import vnu.uet.augmentedrealitymvp.common.util.VarUtils;
 import vnu.uet.augmentedrealitymvp.helper.SessionManager;
 
 /**
@@ -32,7 +30,7 @@ public class CropActivity extends BaseActivity<CropPresenter> implements CropVie
     @Bind(R.id.cropImageView)
     CropImageView cropImageView;
     InputStream imageStream;
-    Bitmap scaled ;
+
 
     @Bind(R.id.crop_activity_marker_name_et)
     EditText crop_activity_marker_name_et;
@@ -47,8 +45,13 @@ public class CropActivity extends BaseActivity<CropPresenter> implements CropVie
         Intent i= getIntent();
         switch (i.getIntExtra(Constants.KEY_ACTIVITY_RESULT_TYPE,0)){
             case Constants.REQUEST_CAMERA:
-                String filename = i.getStringExtra(Constants.KEY_ACTIVITY_RESULT_DATA);
-                uriImage = Uri.fromFile(new File(VarUtils.PATH_AR,filename));
+                uriImage = Uri.parse(i.getStringExtra(Constants.KEY_ACTIVITY_RESULT_DATA));
+                try {
+                    Bitmap captureBmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uriImage);
+                    Log.e("cxz", "cxz" + captureBmp.getHeight());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             case Constants.SELECT_FILE:
                 uriImage = Uri.parse(i.getStringExtra(Constants.KEY_ACTIVITY_RESULT_DATA));
@@ -63,18 +66,7 @@ public class CropActivity extends BaseActivity<CropPresenter> implements CropVie
                 @Override
                 public void onSuccess() {
                     try {
-                        imageStream = getContentResolver().openInputStream(uriImage);
-                        Bitmap bitmap2 = BitmapFactory.decodeStream(imageStream);
-                        if (bitmap2.getHeight() >= 4096 || bitmap2.getWidth() >= 4096) {
-                            int nh = (int) (bitmap2.getHeight() * (1024.0 / bitmap2.getWidth()));
-                            scaled = Bitmap.createScaledBitmap(bitmap2, 1024, nh, true);
-                        }else{
-                            scaled = bitmap2;
-                        }
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        scaled.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream .toByteArray();
-                        encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        getPresenter().encodeImage(getContentResolver(), uriImage);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -82,7 +74,7 @@ public class CropActivity extends BaseActivity<CropPresenter> implements CropVie
 
                 @Override
                 public void onError() {
-
+                    onRequestError("load image error");
                 }
             });
         }
@@ -105,6 +97,12 @@ public class CropActivity extends BaseActivity<CropPresenter> implements CropVie
 
     @Override
     public void onUploadSuccess() {
+        hideProgress();
         finish();
+    }
+
+    @Override
+    public void onEncodeSuccess(String encoded) {
+        this.encoded = encoded;
     }
 }
