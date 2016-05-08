@@ -68,7 +68,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     }
     @Override
     public void showErrorDialog(String message){
-        DialogUtils.showErrorAlert(getActivity(),message);
+        DialogUtils.showErrorAlert(getContext(), message);
     }
 
     @Override

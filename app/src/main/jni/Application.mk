@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #
-#  nftSimple
+#  nftBook
 #  ARToolKit for Android
 #
 #  Disclaimer: IMPORTANT:  This Daqri software is supplied to you by Daqri
@@ -48,7 +48,7 @@
 #
 #--------------------------------------------------------------------------
 
-APP_MODULES		:= nftSimpleNative
+APP_MODULES		:= nftBookNative
 #APP_OPTIM		:= release
 #APP_OPTIM		:= debug
 #APP_ABI			:= all

@@ -37,30 +37,40 @@ public class CameraActivity extends AppCompatActivity {
 
     static {
         System.loadLibrary("c++_shared");
-        System.loadLibrary("nftSimpleNative");
+        System.loadLibrary("nftBookNative");
     }
-
-    public static native boolean nativeCreate(Context ctx);
-    public static native boolean nativeStart();
-    public static native boolean nativeStop();
-    public static native boolean nativeDestroy();
-    // Camera functions.
-    public static native boolean nativeVideoInit(int w, int h, int cameraIndex, boolean cameraIsFrontFacing);
-    public static native void nativeVideoFrame(byte[] image);
-    // OpenGL functions.
-    public static native void nativeSurfaceCreated();
-    public static native void nativeSurfaceChanged(int w, int h);
-    public static native void nativeDrawFrame();
-    // Other functions.
-    public static native void nativeDisplayParametersChanged(int orientation, int w, int h, int dpi); // 0 = portrait, 1 = landscape (device rotated 90 degrees ccw), 2 = portrait upside down, 3 = landscape reverse (device rotated 90 degrees cw).
-    public static native void nativeSetInternetState(int state);
 
     private GLSurfaceView glView;
     private CameraSurface camSurface;
-    private int wCam,hCam;
+    private int wCam, hCam;
     private FrameLayout mainLayout;
-
     private Button btOpenMarker;
+
+    public static native boolean nativeCreate(Context ctx);
+
+    public static native boolean nativeStart();
+
+    public static native boolean nativeStop();
+
+    public static native boolean nativeDestroy();
+
+    // Camera functions.
+    public static native boolean nativeVideoInit(int w, int h, int cameraIndex, boolean cameraIsFrontFacing);
+
+    public static native void nativeVideoFrame(byte[] image);
+
+    // OpenGL functions.
+    public static native void nativeSurfaceCreated();
+
+    public static native void nativeSurfaceChanged(int w, int h);
+
+    public static native void nativeDrawFrame();
+
+    // Other functions.
+    public static native void nativeDisplayParametersChanged(int orientation, int w, int h, int dpi); // 0 = portrait, 1 = landscape (device rotated 90 degrees ccw), 2 = portrait upside down, 3 = landscape reverse (device rotated 90 degrees cw).
+
+    public static native void nativeSetInternetState(int state);
+
     /** Called when the activity is first created. */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
