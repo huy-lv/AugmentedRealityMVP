@@ -537,6 +537,7 @@ static void *loadNFTDataAsync(THREAD_HANDLE_T *threadHandle)
             surfaceSetCount++;
             if (surfaceSetCount == PAGES_MAX) break;
         }
+        //////////////////////////////////////////////////////////////////////////
         if (kpmSetRefDataSet(kpmHandle, refDataSet) < 0) {
             LOGE("Error: kpmSetRefDataSet");
             exit(-1);

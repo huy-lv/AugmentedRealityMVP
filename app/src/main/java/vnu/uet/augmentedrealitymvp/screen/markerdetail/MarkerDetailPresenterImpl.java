@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import java.io.File;
 
 import vnu.uet.augmentedrealitymvp.common.Constants;
+import vnu.uet.augmentedrealitymvp.helper.CacheHelper;
 import vnu.uet.augmentedrealitymvp.helper.SQLiteHandler;
 import vnu.uet.augmentedrealitymvp.model.Marker;
 
@@ -36,7 +37,10 @@ public class MarkerDetailPresenterImpl implements MarkerDetailPresenter {
         db.deleteMarkersOnline(marker.get_id());
         db.close();
 
+        CacheHelper cacheHelper = CacheHelper.getInstance();
+        cacheHelper.deleteMarker(view.getContext(), marker.get_name());
         view.onDeleteMarkerSuccess();
+
     }
 
     @Override

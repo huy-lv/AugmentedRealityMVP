@@ -23,6 +23,8 @@ public class CacheHelper {
     static final int READ_BLOCK_SIZE = 100;
     public static CacheHelper instance;
     private ArrayList<String> contentDat;
+    private int numOfMarker;
+    private ArrayList<String> availableMarkers;
 
     private CacheHelper() {
     }
@@ -80,14 +82,15 @@ public class CacheHelper {
             Log.e(getClass().getName(), " fset not exists");
         }
 
-        changeMarkerNameInDat(ctx,markerName);
+        addMarkerNameInDat(ctx, markerName);
     }
 
-    private void changeMarkerNameInDat(Context ctx,String markerName) {
+    private void addMarkerNameInDat(Context ctx, String markerName) {
         //change marker name in marker.dat
         File markersdat = new File(ctx.getCacheDir().getAbsolutePath() + "/Data/markers.dat");
         contentDat = new ArrayList<>();
-        contentDat.clear();
+        availableMarkers = new ArrayList<>();
+
         //reading text from file
         try {
             FileInputStream fileIn = new FileInputStream(markersdat);
@@ -95,14 +98,39 @@ public class CacheHelper {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             char[] inputBuffer = new char[READ_BLOCK_SIZE];
             String line = "";
-
+            boolean nextLine = false;
             while ((line = bufferedReader.readLine()) != null) {
-
-                if(line.contains("/DataNFT/")){
-                    line = "../DataNFT/"+markerName;
+                if (nextLine) {
+                    numOfMarker = Integer.valueOf(line);
+                    Log.e(getClass().getName(), "num of marker:" + numOfMarker);
+                    line = String.valueOf(numOfMarker);
+                    nextLine = false;
+                }
+                if (line.contains("# Number of markers")) {
+                    nextLine = true;
+                }
+                if (line.contains("/DataNFT/")) {
+                    availableMarkers.add(line);
                 }
                 contentDat.add(line);
             }
+
+            //add new marker
+            boolean markerExist = false;
+            for (String marker : availableMarkers) {
+                if (marker.equals("../DataNFT/" + markerName)) {
+                    markerExist = true;
+                }
+            }
+            if (!markerExist) {
+                contentDat.add("");
+                contentDat.add("../DataNFT/" + markerName);
+                contentDat.add("NFT");
+                contentDat.add("FILTER 15.0");
+                numOfMarker += 1;
+                contentDat.set(1, String.valueOf(numOfMarker));
+            }
+
             inputStreamReader.close();
 
             new RandomAccessFile(markersdat,"rw").setLength(0);
@@ -121,6 +149,56 @@ public class CacheHelper {
         }
     }
 
+    public void deleteMarker(Context context, String markerName) {
+        //change marker name in marker.dat
+        File markersdat = new File(context.getCacheDir().getAbsolutePath() + "/Data/markers.dat");
+        contentDat = new ArrayList<>();
+
+        //reading text from file
+        try {
+            FileInputStream fileIn = new FileInputStream(markersdat);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileIn);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            char[] inputBuffer = new char[READ_BLOCK_SIZE];
+            String line = "";
+            boolean nextLine = false;
+            boolean next4Lines = false;
+            int count = 0;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (nextLine) {
+                    numOfMarker = Integer.valueOf(line);
+                    numOfMarker -= 1;
+                    line = String.valueOf(numOfMarker);
+                    nextLine = false;
+                }
+                if (line.contains("# Number of markers")) {
+                    nextLine = true;
+                }
+                if (line.contains("/DataNFT/" + markerName)) {
+                    next4Lines = true;
+                }
+                if (count == 4) next4Lines = false;
+                if (!next4Lines) contentDat.add(line);
+                if (next4Lines) count += 1;
+            }
+
+            inputStreamReader.close();
+
+            new RandomAccessFile(markersdat, "rw").setLength(0);
+
+            FileOutputStream fOut = new FileOutputStream(markersdat);
+            OutputStreamWriter myOutWriter =
+                    new OutputStreamWriter(fOut);
+            for (String s : contentDat) {
+                myOutWriter.append(s + "\n");
+            }
+            myOutWriter.close();
+            fOut.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean copyFile(String from, String to) {
         try {

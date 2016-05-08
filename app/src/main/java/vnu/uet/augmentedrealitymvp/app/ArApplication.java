@@ -17,9 +17,9 @@ import vnu.uet.augmentedrealitymvp.helper.LruBitmapCache;
 public class ArApplication extends Application {
 
 	public static final String TAG = ArApplication.class.getSimpleName();
+	private static ArApplication sInstance;
 	private RequestQueue mRequestQueue;
 	private ImageLoader mImageLoader;
-	private static ArApplication sInstance;
 	 
     public static synchronized ArApplication getInstance() {
     	return sInstance;
@@ -62,8 +62,8 @@ public class ArApplication extends Application {
     public void onCreate() {
     	super.onCreate(); 
     	sInstance = this;
-    	((ArApplication) sInstance).initializeInstance();
-    }
+		sInstance.initializeInstance();
+	}
 
     protected void initializeInstance() {
     	PreferenceManager.setDefaultValues(this, org.artoolkit.ar.base.R.xml.preferences, false);
@@ -71,6 +71,7 @@ public class ArApplication extends Application {
 		AssetHelper assetHelper = new AssetHelper(getAssets());
 		assetHelper.cacheAssetFolder(getInstance(), "Data");
 		assetHelper.cacheAssetFolder(getInstance(), "DataNFT");
-    }
+		assetHelper.cacheAssetFolder(getInstance(), "OSG");
+	}
 
 }
