@@ -115,7 +115,7 @@ public class CacheHelper {
                 contentDat.add(line);
             }
 
-            //add new marker
+            //add new marker //test multi book
             boolean markerExist = false;
             for (String marker : availableMarkers) {
                 if (marker.equals("../DataNFT/" + markerName)) {
